@@ -1,0 +1,34 @@
+{
+  "sources": {
+    "myface": {
+      "path": "."
+    },
+    "jetty": {
+      "locked_version": "0.1.2"
+    },
+    "java": {
+      "locked_version": "1.22.0"
+    },
+    "jpackage": {
+      "locked_version": "1.0.2"
+    },
+    "openssl": {
+      "locked_version": "1.1.0"
+    },
+    "curl": {
+      "locked_version": "1.1.0"
+    },
+    "python": {
+      "locked_version": "1.4.6"
+    },
+    "build-essential": {
+      "locked_version": "2.0.0"
+    },
+    "yum-epel": {
+      "locked_version": "0.3.4"
+    },
+    "yum": {
+      "locked_version": "3.1.6"
+    }
+  }
+}
