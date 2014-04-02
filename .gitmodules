@@ -7,3 +7,6 @@
 [submodule "jpackage"]
 	path = jpackage
 	url = git://github.com/opscode-cookbooks/jpackage.git
+[submodule "openssl"]
+	path = openssl
+	url = git://github.com/opscode-cookbooks/openssl.git
