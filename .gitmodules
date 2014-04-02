@@ -10,3 +10,6 @@
 [submodule "openssl"]
 	path = openssl
 	url = git://github.com/opscode-cookbooks/openssl.git
+[submodule "chef-android-sdk"]
+	path = chef-android-sdk
+	url = git://github.com/gildegoma/chef-android-sdk.git
