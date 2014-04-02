@@ -20,8 +20,8 @@ user node['myface']['user'] do
 	shell '/bin/bash'
 end
 # include_recipe 'apt'
-include_recipe 'jetty'
-include_recipe 'curl'
+# include_recipe 'jetty'
+# include_recipe 'curl'
 include_recipe 'python'
 
 case node[:platform]
