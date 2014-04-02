@@ -4,3 +4,6 @@
 [submodule "java"]
 	path = java
 	url = git://github.com/socrata-cookbooks/java
+[submodule "jpackage"]
+	path = jpackage
+	url = git://github.com/opscode-cookbooks/jpackage.git
