@@ -8,5 +8,5 @@ version          '0.1.0'
 
 # depends 'jetty', '~> 0.1.2'
 # depends 'curl'
-depends 'python'
+# depends 'python'
 # depends 'aws-cli'
