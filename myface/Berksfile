@@ -3,3 +3,4 @@ site :opscode
 metadata
 # cookbook 'jetty' git: 'https://github.com/opscode-cookbooks/jetty.git'
 # cookbook 'curl' git: 'https://github.com/retr0h/cookbook-curl.git'
+cookbook 'chef-android-sdk', git: 'https://github.com/gildegoma/chef-android-sdk.git'

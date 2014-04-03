@@ -20,9 +20,10 @@ user node['myface']['user'] do
 	shell '/bin/bash'
 end
 # include_recipe 'apt'
-# include_recipe 'jetty'
-# include_recipe 'curl'
-# include_recipe 'python'
+include_recipe 'jetty'
+include_recipe 'curl'
+include_recipe 'python'
+include_recipe 'chef-android-sdk::default'
 
 case node[:platform]
 when 'debian','ubuntu'
@@ -75,5 +76,12 @@ if node[:awscli][:config_profiles]
   if node[:awscli][:compile_time]
     r.run_action(:create)
   end
-  
+ 
+end
+directory "/root/.aws" do
+  action :create
+end
+template "/root/.aws/config" do
+  source "config.erb"
+  action :create
 end
