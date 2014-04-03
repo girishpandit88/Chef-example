@@ -6,11 +6,14 @@
 # 
 # All rights reserved - Do Not Redistribute
 #
-execute "apt-get-update-periodic" do
-  command "apt-get update"
-  ignore_failure true
-  action :nothing
-end.run_action(:run)
+case node[:platform]
+when 'debian', 'ubuntu'
+  execute "apt-get-update-periodic" do
+    command "apt-get update"
+    ignore_failure true
+    action :nothing
+  end.run_action(:run)
+end
 
 group node['myface']['group']
 
@@ -20,10 +23,32 @@ user node['myface']['user'] do
 	shell '/bin/bash'
 end
 # include_recipe 'apt'
-include_recipe 'jetty'
+# include_recipe 'jetty'
 include_recipe 'curl'
 include_recipe 'python'
+
+# case node[:platform]
+# when 'redhat','centos','fedora','amazon'
+#   command = "yum -y install glibc.i686 glibc-devel.i686 libstdc++.i686 zlib-devel.i686 ncurses-devel.i686 libX11-devel.i686 libXrender.i686 libXrandr.i686"
+# end
+# execute 'install android-sdk-dependency' do
+#   command = ""
+#   action :run
+# end
+
+
 include_recipe 'chef-android-sdk::default'
+
+case node[:platform]
+when 'redhat', 'centos', 'fedora', 'amazon'
+  cmd1 = "yum -y install glibc.i686 glibc-devel.i686 libstdc++.i686 zlib-devel.i686 ncurses-devel.i686 libX11-devel.i686 libXrender.i686 libXrandr.i686"
+  r = execute "install android depdencies" do
+    command cmd1
+  end
+  r.run_action(:run)
+end
+
+
 
 case node[:platform]
 when 'debian','ubuntu'
@@ -59,6 +84,7 @@ if node[:awscli][:config_profiles]
       action :nothing
     end
   end
+
   if node[:awscli][:compile_time]
     r.run_action(:create)
   end
@@ -78,10 +104,12 @@ if node[:awscli][:config_profiles]
   end
  
 end
-directory "/root/.aws" do
-  action :create
-end
-template "/root/.aws/config" do
-  source "config.erb"
-  action :create
+if node[:myface][:access_key_id]
+  directory "/root/.aws" do
+    action :create
+  end
+  template "/root/.aws/config" do
+    source "config.erb"
+    action :create
+  end
 end
