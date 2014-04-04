@@ -29,14 +29,14 @@ include_recipe 'python'
 
 include_recipe 'chef-android-sdk::default'
 
-# case node[:platform]
-# when 'redhat', 'centos', 'fedora', 'amazon'
-#   cmd1 = "yum -y install glibc.i686 glibc-devel.i686 libstdc++.i686 zlib-devel.i686 ncurses-devel.i686 libX11-devel.i686 libXrender.i686 libXrandr.i686 zip"
-#   r = execute "install android depdencies" do
-#     command cmd1
-#   end
-#   r.run_action(:run)
-# end
+case node[:platform]
+when 'redhat', 'centos', 'fedora', 'amazon'
+  cmd1 = "yum -y install glibc.i686 glibc-devel.i686 libstdc++.i686 zlib-devel.i686 ncurses-devel.i686 libX11-devel.i686 libXrender.i686 libXrandr.i686"
+  r = execute "install android depdencies" do
+    command cmd1
+  end
+  r.run_action(:run)
+end
 
 case node[:platform]
 when 'debian', 'ubuntu'
