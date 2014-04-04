@@ -5,10 +5,10 @@ Vagrant.configure("2") do |config|
  
 
   config.vm.hostname = "myface-berkshelf"
-  # config.vm.box = "precise64"
-  # config.vm.box_url = "http://files.vagrantup.com/precise64.box"
-  config.vm.box = "centos6.5_x86_64"
-  config.vm.box_url = "https://github.com/2creatives/vagrant-centos/releases/download/v6.5.1/centos65-x86_64-20131205.box"
+  config.vm.box = "precise64"
+  config.vm.box_url = "http://files.vagrantup.com/precise64.box"
+  # config.vm.box = "centos6.5_x86_64"
+  # config.vm.box_url = "https://github.com/2creatives/vagrant-centos/releases/download/v6.5.1/centos65-x86_64-20131205.box"
   config.vm.network :private_network, ip: "33.33.33.10"
   config.omnibus.chef_version = :latest
 
@@ -19,11 +19,15 @@ Vagrant.configure("2") do |config|
       :myface => {
         :access_key_id => $aws_access_key_id,
         :access_key_secret => $aws_access_key_secret
-      }
+      },
+      # :java => {
+      #   :jdk_version => 7,
+      #   :install_flavor => "openjdk"
+      # }
     }
 
     chef.run_list = [
-        "recipe[myface::default]"
+        "recipe[myface::default]", "recipe[myface::aws_configure]"
     ]
   end
 end
