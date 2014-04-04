@@ -50,15 +50,6 @@ end.run_action(:run)
 #   action :create
 # end
 
-# execute 'fetch tnt-jar-signer' do
-#   command "aws s3 cp s3://tnt-build-release/tnt-jarsigner/tnt-jar-signer.tar.gz-06-07-2013 /opt/jarsigner/"
-# end.run_action(:run)
-
-# execute 'extract tnt-jar-signer' do 
-#   cwd '/opt/jarsigner'
-#   command "mv tnt-jar-signer.tar.gz-06-07-2013 tnt-jar-signer.tar.gz; tar xvzf tnt-jar-signer.tar.gz"
-# end.run_action(:run)
-
 # directory '/root/.rim' do
 #   action :create
 # end
@@ -76,10 +67,4 @@ end.run_action(:run)
 #   user 'root'
 #   cwd '/opt/bbndk-2.1.0'
 #   code "source ./bbndk-env.sh"
-# end
-
-# bash 'run jar-signer' do
-#   user 'root'
-#   cwd '/opt/jarsigner'
-#   code './run.sh 8087'
 # end

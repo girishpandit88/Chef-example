@@ -27,7 +27,7 @@ Vagrant.configure("2") do |config|
     }
 
     chef.run_list = [
-        "recipe[myface::default]", "recipe[myface::aws_configure]"
+        "recipe[myface::default]", "recipe[myface::configure_jarsigner]"
     ]
   end
 end
