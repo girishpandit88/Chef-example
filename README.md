@@ -1,4 +1,4 @@
 myface
 ======
 
-Place to hold cookbooks for opswork
+Place to hold cookbooks for opswork-jarsigner
