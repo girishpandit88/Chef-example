@@ -13,3 +13,6 @@
 [submodule "chef-android-sdk"]
 	path = chef-android-sdk
 	url = git://github.com/gildegoma/chef-android-sdk.git
+[submodule "ark"]
+	path = ark
+	url = git://github.com/opscode-cookbooks/ark.git
