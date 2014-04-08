@@ -19,3 +19,6 @@
 [submodule "cookbook-curl"]
 	path = cookbook-curl
 	url = git://github.com/retr0h/cookbook-curl.git
+[submodule "s3_file"]
+	path = s3_file
+	url = git://github.com/adamsb6/s3_file.git
