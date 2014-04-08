@@ -14,17 +14,37 @@
 #   source "config.erb"
 #   action :create
 # end
-execute "extract jarsigner" do
-  cwd "/opt/jarsigner"
-  command "tar xvzf tnt-jar-signer.tar.gz"
-  only_if {::File.directory?('/opt/jarsigner')}
-end.run_action(:run)
+if !::File.exists?('/opt/jarsigner/tnt-jar-signing.war')
+	execute "extract jarsigner" do
+	  cwd "/opt/jarsigner"
+	  command "tar xvzf tnt-jar-signer.tar.gz"
+	  only_if {::File.directory?('/opt/jarsigner')}
+	end.run_action(:run)
+end
 
-execute "run jarsigner" do
+bash "update_bashrc" do
+  user "root"
+  cwd "/etc/profile.d/"
+  code <<-EOH
+    more android-sdk.sh >> ~/.bashrc
+  EOH
+  only_if {::File.exists?('/etc/profile.d/android-sdk.sh')}
+  if `grep -i 'android' ~/.bashrc` !=""
+    action :nothing
+  end
+end
+
+bash "run jarsigner" do
   cwd "/opt/jarsigner"
-  command "./run.sh 8087"
+  user "root"
+  code <<-EOH
+    ./run.sh 8087
+  EOH
   only_if {::File.directory?('/opt/jarsigner')}
-end.run_action(:run)
+  if `ps aux|grep -v grep|grep java| awk {'print $2'}` !=""
+  	action :nothing
+  end
+end
 
 # execute 'fetch bbndk-2' do
 #   command "aws s3 cp s3://tnt-build-release/blackberry-ndk/bbndk-2.1.0.tar /tmp"

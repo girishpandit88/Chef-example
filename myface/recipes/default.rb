@@ -25,9 +25,7 @@ end
 # include_recipe 'apt'
 # include_recipe 'jetty'
 include_recipe 'curl'
-include_recipe 'python'
-
-include_recipe 'chef-android-sdk::default'
+# include_recipe 'python'
 
 case node[:platform]
 when 'redhat', 'centos', 'fedora', 'amazon'
@@ -104,17 +102,19 @@ end.run_action(:run)
 #     r.run_action(:create)
 #   end
 # end
-directory '/opt/jarsigner' do
-  action :create
-end
-s3_file "/opt/jarsigner/tnt-jar-signer.tar.gz" do
-  remote_path "tnt-jarsigner/tnt-jar-signer.tar.gz"
-  bucket "tnt-build-release"
-  if node[:myface][:access_key_id]
-    aws_access_key_id node[:myface][:access_key_id]
-    aws_secret_access_key node[:myface][:access_key_secret]
+if !::File.directory?('/opt/jarsigner')
+  directory '/opt/jarsigner' do
+    action :create
   end
-  action :create
-  owner "root"
-  group "root"
+  s3_file "/opt/jarsigner/tnt-jar-signer.tar.gz" do
+    remote_path "tnt-jarsigner/tnt-jar-signer.tar.gz"
+    bucket "tnt-build-release"
+    if node[:myface][:access_key_id]
+      aws_access_key_id node[:myface][:access_key_id]
+      aws_secret_access_key node[:myface][:access_key_secret]
+    end
+    action :create
+    owner "root"
+    group "root"
+  end
 end
