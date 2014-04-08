@@ -16,3 +16,6 @@
 [submodule "ark"]
 	path = ark
 	url = git://github.com/opscode-cookbooks/ark.git
+[submodule "cookbook-curl"]
+	path = cookbook-curl
+	url = git://github.com/retr0h/cookbook-curl.git
