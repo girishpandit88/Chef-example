@@ -7,13 +7,6 @@
 # All rights reserved - Do Not Redistribute
 #
 
-# directory "/root/.aws" do
-#     action :create
-# end
-# template "/root/.aws/config" do
-#   source "config.erb"
-#   action :create
-# end
 if !::File.exists?('/opt/jarsigner/tnt-jar-signing.war')
 	execute "extract jarsigner" do
 	  cwd "/opt/jarsigner"
@@ -26,7 +19,7 @@ bash "update_bashrc" do
   user "root"
   cwd "/etc/profile.d/"
   code <<-EOH
-    more android-sdk.sh >> ~/.bashrc
+    cat android-sdk.sh >> ~/.bashrc
   EOH
   only_if {::File.exists?('/etc/profile.d/android-sdk.sh')}
   if `grep -i 'android' ~/.bashrc` !=""
@@ -38,6 +31,7 @@ bash "run jarsigner" do
   cwd "/opt/jarsigner"
   user "root"
   code <<-EOH
+    source ~/.bashrc
     ./run.sh 8087
   EOH
   only_if {::File.directory?('/opt/jarsigner')}
