@@ -24,7 +24,7 @@ end
 # end
 # include_recipe 'apt'
 # include_recipe 'jetty'
-include_recipe 'curl'
+# include_recipe 'curl'
 # include_recipe 'python'
 
 case node[:platform]
