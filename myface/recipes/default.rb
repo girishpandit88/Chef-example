@@ -27,9 +27,11 @@ end
 # include_recipe 'curl'
 # include_recipe 'python'
 
+
+
 case node[:platform]
 when 'redhat', 'centos', 'fedora', 'amazon'
-  cmd1 = "yum -y install glibc.i686 glibc-devel.i686 libstdc++.i686 zlib-devel.i686 ncurses-devel.i686 libX11-devel.i686 libXrender.i686 libXrandr.i686"
+  cmd1 = "yum -y install glibc.i686 glibc-devel.i686 libstdc++.i686 zlib-devel.i686 ncurses-devel.i686 libX11-devel.i686 libXrender.i686 libXrandr.i686 libstdc++44.i686 ncurses-devel.x86_64 zlib.i686 libX11-devel.x86_64"
   r = execute "install android depdencies" do
     command cmd1
   end
@@ -39,24 +41,24 @@ end
 case node[:platform]
 when 'debian', 'ubuntu'
   file = '/usr/bin/zip'
-  cmd = 'apt-get install -y zip'
+  cmd = 'apt-get install -y zip ia32-libs'
 when 'redhat', 'centos', 'fedora', 'amazon'
   file = '/usr/bin/zip'
-  cmd = 'yum -y install zip'
+  cmd = 'yum -y install zip ia32-libs'
 end
 
 execute 'install zip' do
   command cmd
   not_if {::File.exists?(file)}
 end.run_action(:run)
-# case node[:platform]
-# when 'debian','ubuntu'
-# 	file = '/usr/local/bin/aws'
-# 	cmd = "apt-get install -y python-pip && pip install awscli"
-# when 'redhat','centos','fedora','amazon'
-# 	file = "/usr/bin/aws"
-# 	cmd ="yum -y install python-pip && pip install awscli"
-# end
+case node[:platform]
+when 'debian','ubuntu'
+	file = '/usr/local/bin/aws'
+	cmd = "apt-get install -y python-pip && pip install awscli"
+when 'redhat','centos','fedora','amazon'
+	file = "/usr/bin/aws"
+	cmd ="yum -y install python-pip && pip install awscli"
+end
 
 # r = execute 'install awscli' do
 # 	command cmd
@@ -102,19 +104,11 @@ end.run_action(:run)
 #     r.run_action(:create)
 #   end
 # end
-if !::File.directory?('/opt/jarsigner')
-  directory '/opt/jarsigner' do
-    action :create
-  end
-  s3_file "/opt/jarsigner/tnt-jar-signer.tar.gz" do
-    remote_path "tnt-jarsigner/tnt-jar-signer.tar.gz"
-    bucket "tnt-build-release"
-    if node[:myface][:access_key_id]
-      aws_access_key_id node[:myface][:access_key_id]
-      aws_secret_access_key node[:myface][:access_key_secret]
-    end
-    action :create
-    owner "root"
-    group "root"
-  end
-end
+
+# directory "/root/.aws" do
+#     action :create
+# end
+# template "/root/.aws/config" do
+#   source "config.erb"
+#   action :create
+# end
