@@ -123,10 +123,16 @@ bash "run jarbarsigner" do
   code <<-EOH
     ln -s /usr/local/android-sdk/tools/zipalign /usr/bin/zipalign
     ln -s /opt/bbndk-2.1.0/host/linux/x86/usr/bin/blackberry-signer /usr/bin/blackberry-signer
-    ./opt/bbndk-2.1.0/bbndk-env.sh
-    source ~/.bashrc
     ./run.sh 8087
   EOH
+  environment {
+    'QNX_TARGET'=>"/opt/bbndk-2.1.0/target/qnx6",
+    'QNX_HOST'=>"/opt/bbndk-2.1.0/host/linux/x86",
+    'QNX_CONFIGURATION'=>"/etc/rim/bbndk",
+    'MAKEFLAGS'=>"-I$QNX_TARGET/usr/include",
+    'LD_LIBRARY_PATH'=>"$QNX_HOST/usr/lib:$LD_LIBRARY_PATH"
+    'PATH'=>"$QNX_HOST/usr/bin:$QNX_CONFIGURATION/bin:$PATH"
+  }
   only_if {::File.directory?('/opt/jarsigner')}
   if `ps aux|grep -v grep|grep java| awk {'print $2'}` !=""
   	action :nothing
