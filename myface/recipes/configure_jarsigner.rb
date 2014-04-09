@@ -7,6 +7,34 @@
 # All rights reserved - Do Not Redistribute
 #
 
+directory "/work" do
+  owner "root"
+  group "root"
+  mode "0000"
+  action :create
+  not_if {::File.directory?('/work')}
+end
+
+if !::File.directory?('/opt/jarsigner')
+  directory '/opt/jarsigner' do
+    owner "root"
+    group "root"
+    mode "0755"
+    action :create
+  end
+  s3_file "/opt/jarsigner/tnt-jar-signer.tar.gz" do
+    remote_path "tnt-jarsigner/tnt-jar-signer.tar.gz"
+    bucket "tnt-build-release"
+    if node[:myface][:access_key_id]
+      aws_access_key_id node[:myface][:access_key_id]
+      aws_secret_access_key node[:myface][:access_key_secret]
+    end
+    action :create
+    owner "root"
+    group "root"
+  end
+end
+
 if !::File.exists?('/opt/jarsigner/tnt-jar-signing.war')
 	execute "extract jarsigner" do
 	  cwd "/opt/jarsigner"
@@ -41,46 +69,3 @@ bash "run jarsigner" do
   	action :nothing
   end
 end
-
-# execute 'fetch bbndk-2' do
-#   command "aws s3 cp s3://tnt-build-release/blackberry-ndk/bbndk-2.1.0.tar /tmp"
-# end.run_action(:run)
-
-# # # directory '/opt' do
-# # #   action :create
-# # #   not_if { ::File.directory?("/opt")}
-# # # end
-
-# execute 'extract and install bbndk-2' do
-#   cwd '/tmp'
-#   command "tar xf bbndk-2.1.0.tar; rm -rf /opt/bbndk-2.1.0; mv bbndk-2.1.0 /opt/"
-#   # cwd '/opt/bbndk-2.1.0/'
-#   # command "source ./bbndk-env.sh"
-# end.run_action(:run)
-
-# # file "/opt/bbndk-2.1.0/bbndk-env.sh" do
-# #   source "/opt/bbndk-2.1.0/bbndk-env.sh"
-# # end
-
-# directory "/opt/jarsigner" do
-#   action :create
-# end
-
-# directory '/root/.rim' do
-#   action :create
-# end
-
-# execute 'configure .rim' do
-#   command 'mv /opt/jarsigner/bb_cert.tar /root/.rim/'
-# end.run_action(:run)
-
-# execute 'extract bb_cert' do
-#   cwd '/root/.rim'
-#   command 'tar -xvf /root/.rim/bb_cert.tar'
-# end.run_action(:run)
-
-# bash 'prepare for run jar signer' do
-#   user 'root'
-#   cwd '/opt/bbndk-2.1.0'
-#   code "source ./bbndk-env.sh"
-# end
