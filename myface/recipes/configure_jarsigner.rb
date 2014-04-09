@@ -1,6 +1,6 @@
 #
 # Cookbook Name:: myface
-# Recipe:: aws_configure
+# Recipe:: configure_jarsigner
 #
 # Copyright (C) 2014 YOUR_NAME
 # 
@@ -15,11 +15,12 @@ if !::File.exists?('/opt/jarsigner/tnt-jar-signing.war')
 	end.run_action(:run)
 end
 
-bash "update_bashrc" do
+bash "update_bashrc_bashprofile" do
   user "root"
   cwd "/etc/profile.d/"
   code <<-EOH
     cat android-sdk.sh >> ~/.bashrc
+    cat android-sdk.sh >> ~/.bash_profile
   EOH
   only_if {::File.exists?('/etc/profile.d/android-sdk.sh')}
   if `grep -i 'android' ~/.bashrc` !=""
@@ -31,6 +32,7 @@ bash "run jarsigner" do
   cwd "/opt/jarsigner"
   user "root"
   code <<-EOH
+    ln -s /usr/local/android-sdk/tools/zipalign /usr/bin/zipalign
     source ~/.bashrc
     ./run.sh 8087
   EOH
