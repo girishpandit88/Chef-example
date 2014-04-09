@@ -122,7 +122,7 @@ bash "run jarbarsigner" do
   user "root"
   code <<-EOH
     ln -s /usr/local/android-sdk/tools/zipalign /usr/bin/zipalign
-    ln -s /opt/bbndk-2.1.0/bin/blackberry-signer /usr/bin/zipalign
+    ln -s /opt/bbndk-2.1.0/host/linux/x86/usr/bin/blackberry-signer /usr/bin/blackberry-signer
     source ~/.bashrc
     ./run.sh 8087
   EOH
