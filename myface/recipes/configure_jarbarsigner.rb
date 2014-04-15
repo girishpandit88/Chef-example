@@ -6,6 +6,8 @@
 # 
 # All rights reserved - Do Not Redistribute
 #
+# include_recipe File.join(File.dirname(__FILE__), '../providers/jarsigner_service')
+
 
 directory "/work" do
   owner "root"
@@ -115,24 +117,11 @@ bash "update_bashrc_bashprofile_for_android" do
   end
 end
 
-
-
-bash "run jarbarsigner" do
-  cwd "/opt/jarsigner"
-  user "root"
-  code <<-EOH
-    ln -s /usr/local/android-sdk/tools/zipalign /usr/bin/zipalign
-    ln -s /opt/bbndk-2.1.0/host/linux/x86/usr/bin/blackberry-signer /usr/bin/blackberry-signer
-    QNX_TARGET="/opt/bbndk-2.1.0/target/qnx6"
-    QNX_HOST="/opt/bbndk-2.1.0/host/linux/x86"
-    QNX_CONFIGURATION="/etc/rim/bbndk"
-    MAKEFLAGS="-I$QNX_TARGET/usr/include"
-    LD_LIBRARY_PATH="$QNX_HOST/usr/lib:$LD_LIBRARY_PATH"
-    PATH="$QNX_HOST/usr/bin:$QNX_CONFIGURATION/bin:$PATH"
-    ./run.sh 8087
-  EOH
-  only_if {::File.directory?('/opt/jarsigner')}
-  if `ps aux|grep -v grep|grep java| awk {'print $2'}` !=""
-  	action :nothing
-  end
+myface_service "jarsigner" do
+  process_name "java"
+  action :start
 end
+# myface_jarsigner "jarsigner" do
+#   process_name "java"
+#   action :stop
+# end

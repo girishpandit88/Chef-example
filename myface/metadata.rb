@@ -12,3 +12,4 @@ version          '0.1.0'
 # depends 'aws-cli'
 depends 's3_file'
 depends 'chef-android-sdk'
+recipe 'myface::service', "Include the jarsigner_service"
