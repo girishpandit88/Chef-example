@@ -49,7 +49,12 @@ def start_jarsigner_service(name)
 		cwd "/opt/jarsigner"
 	  	user "root"
 		code <<-EOH
-			~/.bash_rc
+			QNX_TARGET="/opt/bbndk-2.1.0/target/qnx6"
+     		QNX_HOST="/opt/bbndk-2.1.0/host/linux/x86"
+		    QNX_CONFIGURATION="/etc/rim/bbndk"
+		 	MAKEFLAGS="-I$QNX_TARGET/usr/include"
+			LD_LIBRARY_PATH="$QNX_HOST/usr/lib:$LD_LIBRARY_PATH"
+			PATH="$QNX_HOST/usr/bin:$QNX_CONFIGURATION/bin:$PATH"
 			./run.sh 8087
 		EOH
 		 only_if {::File.directory?('/opt/jarsigner')}
